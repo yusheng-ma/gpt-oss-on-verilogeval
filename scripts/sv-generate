@@ -35,6 +35,7 @@ from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_openai import ChatOpenAI
 from langchain.schema   import SystemMessage, HumanMessage
 from langchain.callbacks import get_openai_callback
+from langchain_ollama import ChatOllama
 
 #-------------------------------------------------------------------------
 # Command line processing
@@ -93,6 +94,11 @@ nim_chat_models = [
   "ai-mistral-7b-instruct-v2",
   "ai-mixtral-8x7b-instruct",
   "ai-mistral-large"
+]
+
+ollama_models = [
+  "llama3.1:8b",
+  "gpt-oss:20b"
 ]
 
 manual_models = [
@@ -238,18 +244,18 @@ def main():
   if opts.model in model_aliases:
     model = model_aliases[opts.model]
 
-  if model not in openai_models + nim_chat_models + manual_models:
-    print("")
-    print(f"ERROR: Unknown model {model}")
-    print("")
-    return
+  # if model not in openai_models + nim_chat_models + manual_models + ollama_models:
+  #   print("")
+  #   print(f"ERROR: Unknown model {model}")
+  #   print("")
+  #   return
 
   task = opts.task
-  if task not in available_tasks:
-    print("")
-    print(f"ERROR: Unknown task {task}")
-    print("")
-    return
+  # if task not in available_tasks:
+  #   print("")
+  #   print(f"ERROR: Unknown task {task}")
+  #   print("")
+  #   return
 
 
   system_msg = prompts[task]['system_msg']
@@ -362,6 +368,14 @@ def main():
       temperature = temperature,
       top_p       = top_p,
       max_tokens  = max_tokens,
+    )
+  elif model in ollama_models:
+    llm = ChatOllama(
+      model       = model,
+      temperature = temperature,
+      top_p       = top_p,
+      num_predict = max_tokens,  # Ollama 使用 num_predict
+      base_url    = "http://localhost:11434",  # 默认 Ollama 地址
     )
   elif model in manual_models:
     output_prompt_filename, junk_ext = os.path.splitext(opts.output)
