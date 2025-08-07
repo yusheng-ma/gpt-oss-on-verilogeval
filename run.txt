@@ -1,2 +1,6 @@
 ../configure  --with-task=spec-to-rtl --with-model=gpt-oss:20b --with-examples=0 --with-samples=1 --with-temperature=0.3 --with-top-p=0.85
 make -j4
+
+OLLAMA_MODELS=/mnt/disk3/yusheng ollama serve
+../configure  --with-task=spec-to-rtl --with-model=gpt-oss:120b --with-examples=0 --with-samples=1 --with-temperature=0.3 --with-top-p=0.85
+OLLAMA_MODELS=/mnt/disk3/yusheng make -j4

@@ -98,7 +98,8 @@ nim_chat_models = [
 
 ollama_models = [
   "llama3.1:8b",
-  "gpt-oss:20b"
+  "gpt-oss:20b",
+  "gpt-oss:120b"
 ]
 
 manual_models = [
